@@ -1,0 +1,6 @@
+[submodule "include/SFML"]
+	path = include/SFML
+	url = https://github.com/SFML/SFML.git
+[submodule "include/assimp"]
+	path = include/assimp
+	url = https://github.com/assimp/assimp.git
