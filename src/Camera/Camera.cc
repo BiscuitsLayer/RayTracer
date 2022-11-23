@@ -3,8 +3,6 @@
 #include "Camera.h"
 #include "../Engine/Constant.h"
 
-#define M_PI 3.1415926
-
 namespace rt {
     Camera::Camera(): _pos(Vector3<float>(0, 0, 0)), _c1(Vector3<float>(1, 0, 0)),
         _c2(Vector3<float>(0, 1, 0)), _c3(Vector3<float>(0, 0, 1)),
@@ -31,19 +29,43 @@ namespace rt {
     }
 
     void Camera::MoveForward(void) {
-        _pos = _pos + _c3 * _vStep;
+        _pos = _pos - _c3 * _vStep;
+        generateScreen();
     }
 
     void Camera::MoveLeft(void) {
-        _pos = _pos + _c1 * _hStep;
+        _pos = _pos - _c1 * _hStep;
+        generateScreen();
     }
 
     void Camera::MoveBack(void) {
-        _pos = _pos - _c3 * _vStep;
+        _pos = _pos + _c3 * _vStep;
+        generateScreen();
     }
 
     void Camera::MoveRight(void) {
-        _pos = _pos - _c1 * _hStep;
+        _pos = _pos + _c1 * _hStep;
+        generateScreen();
+    }
+
+    void Camera::TurnLeft(void) {
+        Vector3<float> _c1_old = _c1;
+        Vector3<float> _c3_old = _c3;
+        _c3 = _c3_old + _c1_old * 0.05;
+        _c1 = _c1_old - _c3_old * 0.05;
+        _c3.Normalize();
+        _c1.Normalize();
+        generateScreen();
+    }
+
+    void Camera::TurnRight(void) {
+        Vector3<float> _c1_old = _c1;
+        Vector3<float> _c3_old = _c3;
+        _c3 = _c3_old - _c1_old * 0.05;
+        _c1 = _c1_old + _c3_old * 0.05;
+        _c3.Normalize();
+        _c1.Normalize();
+        generateScreen();
     }
 
     Vector2<unsigned int> const& Camera::GetRes(void) const {
@@ -62,7 +84,7 @@ namespace rt {
    void Camera::generateScreen() {
         _screenDist = 0.5f;
         _screenRes = Vector2<unsigned int>(Constant::DefaultScreenWidth, Constant::DefaultScreenHeight);
-        float screenWidth = 2.f * std::tan((Constant::DefaultScreenFOV / 2.f) * static_cast<float>(M_PI) / 180.f) * _screenDist;
+        float screenWidth = 2.f * std::tan((Constant::DefaultScreenFOV / 2.f) * static_cast<float>(Constant::PI) / 180.f) * _screenDist;
         _screenSize = Vector2<float>(screenWidth, screenWidth * _screenRes.Y / _screenRes.X);
         _screenCorner = _pos + _c3 * (-1.f) - _c1 * (_screenSize.X / 2.f) + _c2 * (_screenSize.Y / 2.f);
    }

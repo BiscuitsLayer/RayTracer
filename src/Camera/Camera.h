@@ -20,6 +20,9 @@ class Camera {
    void                                   MoveBack(void);
    void                                   MoveRight(void);
 
+   void                                   TurnLeft(void);
+   void                                   TurnRight(void);
+
    Vector2<unsigned int> const&           GetRes(void) const;
    void                                   SetMatrix(Vector3<float> const& pos, Vector3<float> const& c1, Vector3<float> const& c2, Vector3<float> const& c3);
  

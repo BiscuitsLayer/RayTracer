@@ -3,8 +3,7 @@
 #include <cmath>
 #include <iostream>
 #include "Vector2.h"
-
-#define M_PI 3.1415926
+#include "../Engine/Constant.h"
 
 namespace rt {
     template <class T>
@@ -34,7 +33,7 @@ namespace rt {
         }
 
         T   Angle(Vector3<T> const & other) const {
-            return std::acos(this->Dot(other) / (this->Norm() * other.Norm())) * 180.f / static_cast<float>(M_PI);
+            return std::acos(this->Dot(other) / (this->Norm() * other.Norm())) * 180.f / static_cast<float>(Constant::PI);
         }
 
         void    Normalize(void) {

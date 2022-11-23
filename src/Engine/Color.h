@@ -24,12 +24,6 @@ namespace rt {
 
         Color_Component     GetColor() const;
         void                SetColor(Color_Component const& component);
-        std::uint8_t const& GetRedComponent() const;
-        void                SetRedComponent(std::uint8_t value);
-        std::uint8_t const& GetBlueComponent() const;
-        void                SetBlueComponent(std::uint8_t value);
-        std::uint8_t const& GetGreenComponent() const;
-        void                SetGreenComponent(std::uint8_t value);
 
         Color const& operator+=(Color const& other);
         Color const operator*(float const& coef);

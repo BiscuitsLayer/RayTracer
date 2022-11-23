@@ -32,10 +32,6 @@ namespace rt {
         return color;
     }
 
-    /*void Engine::_pathtrace(Ray const& ray, unsigned int const& depth, Color & color) {
-
-    }*/
-
     Intersection const Engine::_intersect(Ray const& ray) {
         Intersection rtn;
         float min = -1;

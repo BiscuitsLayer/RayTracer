@@ -15,7 +15,6 @@ include_directories(./include/assimp/include)
 set(ASSIMP_LIBRARY assimp::assimp)
 
 set(SOURCE_FILES    src/Camera/Camera.cc
-                    src/Dispatcher/Dispatcher.cc
                     src/Engine/Color.cc
                     src/Engine/Engine.cc
                     src/Light/PointLight.cc

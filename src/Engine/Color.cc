@@ -34,30 +34,6 @@ void rt::Color::SetColor(const rt::Color_Component &component) {
     _color = component;
 }
 
-std::uint8_t const& rt::Color::GetRedComponent() const {
-    return _color.rgba.r;
-}
-
-void rt::Color::SetRedComponent(std::uint8_t value) {
-    _color.rgba.r = value;
-}
-
-std::uint8_t const& rt::Color::GetBlueComponent() const {
-    return _color.rgba.b;
-}
-
-void rt::Color::SetBlueComponent(std::uint8_t value) {
-    _color.rgba.b = value;
-}
-
-std::uint8_t const& rt::Color::GetGreenComponent() const {
-    return _color.rgba.g;
-}
-
-void rt::Color::SetGreenComponent(std::uint8_t value) {
-    _color.rgba.g = value;
-}
-
 rt::Color const& rt::Color::operator+=(rt::Color const& other) {
     _color.rgba.r = std::min(_color.rgba.r + other._color.rgba.r, 255);
     _color.rgba.g = std::min(_color.rgba.g + other._color.rgba.g, 255);
