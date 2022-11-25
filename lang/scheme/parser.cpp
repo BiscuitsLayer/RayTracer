@@ -2,7 +2,6 @@
 #include <error.h>
 
 #include <stdexcept>
-#include <cassert>
 
 std::shared_ptr<Object> GetSymbolQuoteConstant(Tokenizer* tokenizer, Token& token) {
     std::shared_ptr<Object> first = nullptr;
@@ -12,52 +11,6 @@ std::shared_ptr<Object> GetSymbolQuoteConstant(Tokenizer* tokenizer, Token& toke
             first = std::make_shared<Boolean>(true);
         } else if (symbol_token->name == "#f") {
             first = std::make_shared<Boolean>(false);
-        } else if (symbol_token->name == "quote") {
-            first = std::make_shared<Quote>();
-        } else if (symbol_token->name == "boolean?") {
-            first = std::make_shared<IsBoolean>();
-        } else if (symbol_token->name == "number?") {
-            first = std::make_shared<IsNumber>();
-        } else if (symbol_token->name == "pair?") {
-            first = std::make_shared<IsPair>();
-        } else if (symbol_token->name == "null?") {
-            first = std::make_shared<IsNull>();
-        } else if (symbol_token->name == "list?") {
-            first = std::make_shared<IsList>();
-        } else if (symbol_token->name == "not") {
-            first = std::make_shared<Not>();
-        } else if (symbol_token->name == "and") {
-            first = std::make_shared<And>();
-        } else if (symbol_token->name == "or") {
-            first = std::make_shared<Or>();
-        } else if (symbol_token->name == "=") {
-            first = std::make_shared<Equal>();
-        } else if (symbol_token->name == ">") {
-            first = std::make_shared<Greater>();
-        } else if (symbol_token->name == ">=") {
-            first = std::make_shared<GreaterEqual>();
-        } else if (symbol_token->name == "<") {
-            first = std::make_shared<Less>();
-        } else if (symbol_token->name == "<=") {
-            first = std::make_shared<LessEqual>();
-        } else if (symbol_token->name == "+") {
-            first = std::make_shared<Add>();
-        } else if (symbol_token->name == "*") {
-            first = std::make_shared<Multiply>();
-        } else if (symbol_token->name == "-") {
-            first = std::make_shared<Subtract>();
-        } else if (symbol_token->name == "/") {
-            first = std::make_shared<Divide>();
-        } else if (symbol_token->name == "max") {
-            first = std::make_shared<Max>();
-        } else if (symbol_token->name == "min") {
-            first = std::make_shared<Min>();
-        } else if (symbol_token->name == "abs") {
-            first = std::make_shared<Abs>();
-        } else if (symbol_token->name == "define") {
-            first = std::make_shared<Define>();
-        } else if (symbol_token->name == "set!") {
-            first = std::make_shared<Set>();
         } else {
             first = std::make_shared<Symbol>(symbol_token->name);
         }
@@ -80,10 +33,10 @@ std::shared_ptr<Object> GetSymbolQuoteConstant(Tokenizer* tokenizer, Token& toke
             As<Cell>(quote_cell)->SetSecond(argument);
             first = quote_cell;
         } else {
-            throw SyntaxError("Invalid token after quote: expected BracketToken::OPEN or SymbolToken");
+            throw SyntaxError(
+                "Invalid token after quote: expected BracketToken::OPEN or SymbolToken");
         }
-    } else if (ConstantToken* constant_token = std::get_if<ConstantToken>(&token);
-               constant_token) {
+    } else if (ConstantToken* constant_token = std::get_if<ConstantToken>(&token); constant_token) {
         first = std::make_shared<Number>(constant_token->value);
     } else {
         throw SyntaxError("Invalid token");
@@ -114,7 +67,6 @@ std::shared_ptr<Object> Read(Tokenizer* tokenizer) {
             first = GetSymbolQuoteConstant(tokenizer, token);
         }
 
-        assert(Is<Cell>(current));
         As<Cell>(current)->SetFirst(first);
         next = std::make_shared<Cell>(nullptr, nullptr);
         As<Cell>(current)->SetSecond(next);
@@ -167,7 +119,6 @@ std::shared_ptr<Object> ReadList(Tokenizer* tokenizer) {
             first = GetSymbolQuoteConstant(tokenizer, token);
         }
 
-        assert(Is<Cell>(current));
         As<Cell>(current)->SetFirst(first);
         next = std::make_shared<Cell>(nullptr, nullptr);
         As<Cell>(current)->SetSecond(next);
@@ -194,8 +145,6 @@ std::shared_ptr<Object> ReadList(Tokenizer* tokenizer) {
         } else {
             throw SyntaxError("Invalid token after DotToken");
         }
-
-        assert(Is<Cell>(previous));
         As<Cell>(previous)->SetSecond(second);
 
         token = tokenizer->GetToken();

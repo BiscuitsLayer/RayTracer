@@ -11,6 +11,7 @@
 // Forward declaration
 class Object;
 class Cell;
+class Quote;
 
 template <class T>
 std::shared_ptr<T> As(const std::shared_ptr<Object>& obj) {
@@ -19,16 +20,15 @@ std::shared_ptr<T> As(const std::shared_ptr<Object>& obj) {
 
 template <class T>
 bool Is(const std::shared_ptr<Object>& obj) {
-    Object* raw = obj.get();
-    T* new_raw = dynamic_cast<T*>(raw);
-    return new_raw != nullptr;
+    return std::dynamic_pointer_cast<T>(obj) != nullptr;
 }
 
 // OBJECT //
 
 class Object : public std::enable_shared_from_this<Object> {
 public:
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) = 0;
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) = 0;
     virtual ~Object() = default;
 };
 
@@ -39,7 +39,9 @@ public:
     Number(int value) : value_(value) {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>&,
+                                             std::shared_ptr<Scope>) override {
+
         return shared_from_this();
     }
 
@@ -56,8 +58,9 @@ public:
     Symbol(const std::string& name) : name_(name) {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
-        std::shared_ptr<Object> value = scope.GetVariableValue(name_);
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>&,
+                                             std::shared_ptr<Scope> scope) override {
+        std::shared_ptr<Object> value = scope->GetVariableValueRecursive(name_);
         return value;
     }
 
@@ -74,7 +77,8 @@ public:
     Boolean(bool value) : value_(value) {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>&,
+                                             std::shared_ptr<Scope>) override {
         return shared_from_this();
     }
 
@@ -90,7 +94,9 @@ private:
 
 std::vector<std::shared_ptr<Object>> ListToVector(std::shared_ptr<Object> init);
 std::string ListToString(std::shared_ptr<Object> init);
-
+std::shared_ptr<Object> BuildLambda(std::shared_ptr<Object> init, std::shared_ptr<Scope> scope);
+std::pair<std::string, std::shared_ptr<Object>> BuildLambdaSugar(
+    std::vector<std::shared_ptr<Object>> parts, std::shared_ptr<Scope> scope);
 
 class Cell : public Object {
 public:
@@ -98,14 +104,26 @@ public:
         : first_(first), second_(second) {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
-        if (!GetFirst()) { // Empty list case
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>&,
+                                             std::shared_ptr<Scope> scope) override {
+        if (!GetFirst()) {  // Empty list case
             return shared_from_this();
         }
+
         std::shared_ptr<Object> function = GetFirst();
-        if (!Is<Symbol>(function)) {
-            throw RuntimeError("Lists are not self evaliating, use \"quote\"");
+        std::shared_ptr<Object> maybe_lambda_keyword = function;
+        if (Is<Symbol>(maybe_lambda_keyword) &&
+            (As<Symbol>(maybe_lambda_keyword)->GetName() == "lambda")) {
+            return BuildLambda(GetSecond(), scope);
+        } else if (!Is<Quote>(function)) {
+            if (Is<Symbol>(function) || Is<Cell>(function)) {
+                function =
+                    function->Evaluate({}, scope);  // Get function object from scope variables
+            } else {
+                throw RuntimeError("Lists are not self evaliating, use \"quote\"");
+            }
         }
+
         std::shared_ptr<Object> arguments_start = GetSecond();
 
         std::vector<std::shared_ptr<Object>> function_arguments = ListToVector(arguments_start);
@@ -138,12 +156,14 @@ public:
     IsBoolean() : Symbol("boolean?") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 1) {
-            throw RuntimeError("Exactly 1 argument required for \"IsBoolean\" function");
+            throw SyntaxError("Exactly 1 argument required for \"IsBoolean\" function");
         }
         std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
-        return Is<Boolean>(value) ? std::make_shared<Boolean>(true) : std::make_shared<Boolean>(false);
+        return Is<Boolean>(value) ? std::make_shared<Boolean>(true)
+                                  : std::make_shared<Boolean>(false);
     }
 };
 
@@ -152,12 +172,30 @@ public:
     IsNumber() : Symbol("number?") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 1) {
-            throw RuntimeError("Exactly 1 argument required for \"IsNumber\" function");
+            throw SyntaxError("Exactly 1 argument required for \"IsNumber\" function");
         }
         std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
-        return Is<Number>(value) ? std::make_shared<Boolean>(true) : std::make_shared<Boolean>(false);
+        return Is<Number>(value) ? std::make_shared<Boolean>(true)
+                                 : std::make_shared<Boolean>(false);
+    }
+};
+
+class IsSymbol : public Symbol {
+public:
+    IsSymbol() : Symbol("symbol?") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        if (arguments.size() != 1) {
+            throw SyntaxError("Exactly 1 argument required for \"IsSymbol\" function");
+        }
+        std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
+        return Is<Symbol>(value) ? std::make_shared<Boolean>(true)
+                                 : std::make_shared<Boolean>(false);
     }
 };
 
@@ -166,9 +204,10 @@ public:
     IsPair() : Symbol("pair?") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 1) {
-            throw RuntimeError("Exactly 1 argument required for \"IsPair\" function");
+            throw SyntaxError("Exactly 1 argument required for \"IsPair\" function");
         }
         std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
 
@@ -187,7 +226,8 @@ public:
                 if (cell->GetSecond()) {
                     return std::make_shared<Boolean>(false);
                 }
-                return cell->GetFirst() ? std::make_shared<Boolean>(true) : std::make_shared<Boolean>(false);
+                return cell->GetFirst() ? std::make_shared<Boolean>(true)
+                                        : std::make_shared<Boolean>(false);
             }
         }
     }
@@ -198,9 +238,10 @@ public:
     IsNull() : Symbol("null?") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 1) {
-            throw RuntimeError("Exactly 1 argument required for \"IsNull\" function");
+            throw SyntaxError("Exactly 1 argument required for \"IsNull\" function");
         }
         std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
 
@@ -220,16 +261,18 @@ public:
     IsList() : Symbol("list?") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 1) {
-            throw RuntimeError("Exactly 1 argument required for \"IsList\" function");
+            throw SyntaxError("Exactly 1 argument required for \"IsList\" function");
         }
         std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
 
         if (!Is<Cell>(value)) {
             return std::make_shared<Boolean>(false);
         }
-        for (std::shared_ptr<Cell> cell = As<Cell>(value); cell; cell = As<Cell>(cell->GetSecond())) {
+        for (std::shared_ptr<Cell> cell = As<Cell>(value); cell;
+             cell = As<Cell>(cell->GetSecond())) {
             if (cell->GetSecond() && !Is<Cell>(cell->GetSecond())) {
                 return std::make_shared<Boolean>(false);
             }
@@ -243,12 +286,13 @@ public:
     Quote() : Symbol("quote") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope>) override {
         if (arguments.empty()) {
             return std::make_shared<Cell>(nullptr, nullptr);
         }
         if (arguments.size() > 1) {
-            throw RuntimeError("Exactly 1 argument (list) required for \"Quote\" function");
+            throw SyntaxError("Exactly 1 argument (list) required for \"Quote\" function");
         }
         return arguments[0];
     }
@@ -259,14 +303,16 @@ public:
     Not() : Symbol("not") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 1) {
             throw RuntimeError("Exactly 1 argument required for \"Not\" function");
         }
         std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
 
         if (Is<Boolean>(value)) {
-            return As<Boolean>(value)->GetValue() ? std::make_shared<Boolean>(false) : std::make_shared<Boolean>(true);
+            return As<Boolean>(value)->GetValue() ? std::make_shared<Boolean>(false)
+                                                  : std::make_shared<Boolean>(true);
         }
         return std::make_shared<Boolean>(false);
     }
@@ -277,10 +323,11 @@ public:
     And() : Symbol("and") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Boolean>(true);
         std::shared_ptr<Object> value = nullptr;
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (Is<Boolean>(value)) {
                 if (!As<Boolean>(value)->GetValue()) {
@@ -300,10 +347,11 @@ public:
     Or() : Symbol("or") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Boolean>(false);
         std::shared_ptr<Object> value = nullptr;
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (Is<Boolean>(value)) {
                 if (As<Boolean>(value)->GetValue()) {
@@ -323,13 +371,14 @@ public:
     Equal() : Symbol("=") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Boolean>(true);
 
         std::shared_ptr<Object> last_value = nullptr;
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             last_value = value;
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
@@ -350,13 +399,14 @@ public:
     Greater() : Symbol(">") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Boolean>(true);
 
         std::shared_ptr<Object> last_value = nullptr;
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             last_value = value;
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
@@ -377,13 +427,14 @@ public:
     GreaterEqual() : Symbol(">=") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Boolean>(true);
 
         std::shared_ptr<Object> last_value = nullptr;
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             last_value = value;
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
@@ -404,13 +455,14 @@ public:
     Less() : Symbol("<") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Boolean>(true);
 
         std::shared_ptr<Object> last_value = nullptr;
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             last_value = value;
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
@@ -431,13 +483,14 @@ public:
     LessEqual() : Symbol("<=") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Boolean>(true);
 
         std::shared_ptr<Object> last_value = nullptr;
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             last_value = value;
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
@@ -458,11 +511,12 @@ public:
     Add() : Symbol("+") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Number>(0);
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
                 throw RuntimeError("\"Add\" error: not a number given");
@@ -482,11 +536,12 @@ public:
     Multiply() : Symbol("*") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         std::shared_ptr<Object> ans = std::make_shared<Number>(1);
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
                 throw RuntimeError("\"Multiply\" error: not a number given");
@@ -506,14 +561,15 @@ public:
     Subtract() : Symbol("-") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() <= 1) {
             throw RuntimeError("More than 1 argument required for \"Subtract\" function");
         }
         std::shared_ptr<Object> ans = std::make_shared<Number>(0);
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
                 throw RuntimeError("\"Subtract\" error: not a number given");
@@ -528,7 +584,6 @@ public:
 
                     ans = std::make_shared<Number>(old_number - update_number);
                 }
-                
             }
         }
         return ans;
@@ -540,14 +595,15 @@ public:
     Divide() : Symbol("/") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() <= 1) {
             throw RuntimeError("More than 1 argument required for \"Divide\" function");
         }
         std::shared_ptr<Object> ans = std::make_shared<Number>(1);
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
                 throw RuntimeError("\"Divide\" error: not a number given");
@@ -562,7 +618,6 @@ public:
 
                     ans = std::make_shared<Number>(old_number / update_number);
                 }
-                
             }
         }
         return ans;
@@ -574,14 +629,15 @@ public:
     Max() : Symbol("max") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.empty()) {
             throw RuntimeError("At least 1 argument required for \"Max\" function");
         }
         std::shared_ptr<Object> ans = nullptr;
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
                 throw RuntimeError("\"Max\" error: not a number given");
@@ -598,7 +654,6 @@ public:
                         ans = std::make_shared<Number>(new_number);
                     }
                 }
-                
             }
         }
         return ans;
@@ -610,14 +665,15 @@ public:
     Min() : Symbol("min") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.empty()) {
             throw RuntimeError("At least 1 argument required for \"Min\" function");
         }
         std::shared_ptr<Object> ans = nullptr;
         std::shared_ptr<Object> value = nullptr;
 
-        for (int argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
             value = arguments[argument_idx]->Evaluate({}, scope);
             if (!Is<Number>(value)) {
                 throw RuntimeError("\"Min\" error: not a number given");
@@ -634,7 +690,6 @@ public:
                         ans = std::make_shared<Number>(new_number);
                     }
                 }
-                
             }
         }
         return ans;
@@ -646,7 +701,8 @@ public:
     Abs() : Symbol("abs") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 1) {
             throw RuntimeError("Exactly 1 argument required for \"Abs\" function");
         }
@@ -671,17 +727,37 @@ public:
     Define() : Symbol("define") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 2) {
-            throw RuntimeError("Exactly 2 arguments required for \"Define\" function");
+            throw SyntaxError("Exactly 2 arguments required for \"Define\" function");
         }
 
+        if (Is<Cell>(arguments[0])) {
+            auto name_and_value = BuildLambdaSugar(arguments, scope);
+            scope->SetVariableValue(name_and_value.first, name_and_value.second);
+            return nullptr;
+        }
         if (!Is<Symbol>(arguments[0])) {
-            throw RuntimeError("\"Define\" error: first argument should be a variable name");
+            throw RuntimeError(
+                "\"Define\" error: first argument should be a variable name or sugar like \"(f x "
+                "y) (x + y)\"");
         }
         std::string name = As<Symbol>(arguments[0])->GetName();
-        std::shared_ptr<Object> value = arguments[1];
-        scope.SetVariableValue(name, value);
+        std::shared_ptr<Object> value = nullptr;
+
+        if (Is<Cell>(arguments[1])) {
+            std::shared_ptr<Object> maybe_lambda_keyword = As<Cell>(arguments[1])->GetFirst();
+            if (Is<Symbol>(maybe_lambda_keyword) &&
+                As<Symbol>(maybe_lambda_keyword)->GetName() == "lambda") {
+                value = BuildLambda(As<Cell>(arguments[1])->GetSecond(), scope);
+            } else {
+                value = arguments[1]->Evaluate({}, scope);
+            }
+        } else {
+            value = arguments[1]->Evaluate({}, scope);
+        }
+        scope->SetVariableValue(name, value);
         return nullptr;
     }
 };
@@ -691,19 +767,286 @@ public:
     Set() : Symbol("set!") {
     }
 
-    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments, Scope& scope) override {
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
         if (arguments.size() != 2) {
-            throw RuntimeError("Exactly 2 arguments required for \"Set\" function");
+            throw SyntaxError("Exactly 2 arguments required for \"Set\" function");
         }
 
         if (!Is<Symbol>(arguments[0])) {
             throw RuntimeError("\"Set\" error: first argument should be a variable name");
         }
         std::string name = As<Symbol>(arguments[0])->GetName();
-        std::shared_ptr<Object> old_value = scope.GetVariableValue(name); // to make sure the variable exists
+        std::shared_ptr<Object> old_value =
+            scope->GetVariableValueRecursive(name);  // to make sure the variable exists
 
-        std::shared_ptr<Object> new_value = arguments[1];
-        scope.SetVariableValue(name, new_value);
+        std::shared_ptr<Object> new_value = arguments[1]->Evaluate({}, scope);
+        scope->SetVariableValue(name, new_value);
         return nullptr;
     }
+};
+
+class If : public Symbol {
+public:
+    If() : Symbol("if") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        if ((arguments.size() < 2) || (arguments.size() > 3)) {
+            throw SyntaxError("Exactly 2 or 3 arguments required for \"If\" function");
+        }
+
+        std::shared_ptr<Object> condition = arguments[0]->Evaluate({}, scope);
+        if (!Is<Boolean>(condition)) {
+            throw RuntimeError("\"If\" error: condition is not Boolean");
+        }
+
+        if (As<Boolean>(condition)->GetValue()) {
+            return arguments[1]->Evaluate({}, scope);
+        } else {
+            if (arguments.size() == 3) {
+                return arguments[2]->Evaluate({}, scope);
+            }
+            return nullptr;
+        }
+        return nullptr;
+    }
+};
+
+class Cons : public Symbol {
+public:
+    Cons() : Symbol("cons") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope>) override {
+        if (arguments.size() != 2) {
+            throw SyntaxError("Exactly 2 arguments required for \"Cons\" function");
+        }
+
+        std::shared_ptr<Object> ans = std::make_shared<Cell>(nullptr, nullptr);
+        As<Cell>(ans)->SetFirst(arguments[0]);
+        As<Cell>(ans)->SetSecond(arguments[1]);
+        return ans;
+    }
+};
+
+class Car : public Symbol {
+public:
+    Car() : Symbol("car") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        if (arguments.size() != 1) {
+            throw SyntaxError("Exactly 1 argument required for \"Car\" function");
+        }
+
+        std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
+        if (!Is<Cell>(value)) {
+            throw RuntimeError("\"Car\" error: not a pair or list given");
+        }
+        std::shared_ptr<Object> ans = As<Cell>(value)->GetFirst();
+        return ans;
+    }
+};
+
+class Cdr : public Symbol {
+public:
+    Cdr() : Symbol("cdr") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        if (arguments.size() != 1) {
+            throw SyntaxError("Exactly 1 argument required for \"Cdr\" function");
+        }
+
+        std::shared_ptr<Object> value = arguments[0]->Evaluate({}, scope);
+        if (!Is<Cell>(value)) {
+            throw RuntimeError("\"Cdr\" error: not a pair or list given");
+        }
+        std::shared_ptr<Object> ans = As<Cell>(value)->GetSecond();
+        return ans;
+    }
+};
+
+class SetCar : public Symbol {
+public:
+    SetCar() : Symbol("set-car!") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        if (arguments.size() != 2) {
+            throw SyntaxError("Exactly 2 arguments required for \"SetCar\" function");
+        }
+
+        std::shared_ptr<Object> source = arguments[0]->Evaluate({}, scope);
+        if (!Is<Cell>(source)) {
+            throw RuntimeError("\"SetCar\" error: not a pair or list given");
+        }
+        std::shared_ptr<Object> value = arguments[1]->Evaluate({}, scope);
+        As<Cell>(source)->SetFirst(value);
+        return nullptr;
+    }
+};
+
+class SetCdr : public Symbol {
+public:
+    SetCdr() : Symbol("set-cdr!") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        if (arguments.size() != 2) {
+            throw SyntaxError("Exactly 2 arguments required for \"SetCdr\" function");
+        }
+
+        std::shared_ptr<Object> source = arguments[0]->Evaluate({}, scope);
+        if (!Is<Cell>(source)) {
+            throw RuntimeError("\"SetCdr\" error: not a pair or list given");
+        }
+        std::shared_ptr<Object> value = arguments[1]->Evaluate({}, scope);
+        As<Cell>(source)->SetSecond(value);
+        return nullptr;
+    }
+};
+
+class List : public Symbol {
+public:
+    List() : Symbol("list") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope>) override {
+        std::shared_ptr<Object> previous = nullptr;
+        std::shared_ptr<Object> current = std::make_shared<Cell>(nullptr, nullptr);
+        std::shared_ptr<Object> ans = current;
+        std::shared_ptr<Object> next = nullptr;
+
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+            As<Cell>(current)->SetFirst(arguments[argument_idx]);
+            next = std::make_shared<Cell>(nullptr, nullptr);
+            As<Cell>(current)->SetSecond(next);
+
+            previous = current;
+            current = next;
+        }
+        if (previous) {
+            As<Cell>(previous)->SetSecond(nullptr);
+        }
+
+        return ans;
+    }
+};
+
+class ListRef : public Symbol {
+public:
+    ListRef() : Symbol("list-ref") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        if (arguments.size() != 2) {
+            throw SyntaxError("Exactly 2 arguments required for \"ListRef\" function");
+        }
+
+        std::shared_ptr<Object> init = arguments[0]->Evaluate({}, scope);
+        std::shared_ptr<Object> idx = arguments[1]->Evaluate({}, scope);
+        if (!Is<Number>(idx)) {
+            throw RuntimeError("\"ListRef\" error: idx is not a number");
+        }
+        int idx_number = As<Number>(idx)->GetValue();
+
+        for (std::shared_ptr<Cell> cell = As<Cell>(init); cell;
+             cell = As<Cell>(cell->GetSecond())) {
+            if (idx_number == 0) {
+                return cell->GetFirst();
+            }
+            --idx_number;
+        }
+        throw RuntimeError("\"ListRef\" error: idx out of bounds");
+    }
+};
+
+class ListTail : public Symbol {
+public:
+    ListTail() : Symbol("list-tail") {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        if (arguments.size() != 2) {
+            throw SyntaxError("Exactly 2 arguments required for \"ListTail\" function");
+        }
+        std::shared_ptr<Object> init = arguments[0]->Evaluate({}, scope);
+        std::shared_ptr<Object> idx = arguments[1]->Evaluate({}, scope);
+        if (!Is<Number>(idx)) {
+            throw RuntimeError("\"ListTail\" error: idx is not a number");
+        }
+        int idx_number = As<Number>(idx)->GetValue();
+
+        for (std::shared_ptr<Cell> cell = As<Cell>(init); cell;
+             cell = As<Cell>(cell->GetSecond())) {
+            if (idx_number == 0) {
+                return cell;
+            }
+            --idx_number;
+        }
+        if (idx_number == 0) {
+            return nullptr;
+        }
+        throw RuntimeError("\"ListTail\" error: idx out of bounds");
+    }
+};
+
+class Lambda : public Object {
+public:
+    Lambda(std::vector<std::shared_ptr<Object>>& commands,
+           std::vector<std::string>& arguments_idx_to_name, std::shared_ptr<Scope> self_scope)
+        : commands_(commands),
+          arguments_idx_to_name_(arguments_idx_to_name),
+          self_scope_(self_scope) {
+    }
+
+    virtual std::shared_ptr<Object> Evaluate(const std::vector<std::shared_ptr<Object>>& arguments,
+                                             std::shared_ptr<Scope> scope) override {
+        std::shared_ptr<Scope> cur_scope = std::make_shared<Scope>();
+        cur_scope->SetPreviousScope(scope);
+
+        for (size_t argument_idx = 0; argument_idx < arguments.size(); ++argument_idx) {
+            std::string name = arguments_idx_to_name_[argument_idx];
+            std::shared_ptr<Object> value = arguments[argument_idx]->Evaluate({}, scope);
+            cur_scope->SetVariableValue(name, value);
+        }
+
+        // Set variables before entering the function
+        auto self_scope_variables = self_scope_->GetVariablesMap();
+        for (auto& [name, value] : self_scope_variables) {
+            try {
+                cur_scope->GetVariableValueLocal(name);
+            } catch (NameError& error) {
+                cur_scope->SetVariableValue(name, value);
+            }
+        }
+
+        std::shared_ptr<Object> ans = nullptr;
+        for (size_t command_idx = 0; command_idx < commands_.size(); ++command_idx) {
+            ans = commands_[command_idx]->Evaluate({}, cur_scope);
+        }
+
+        // Update variables after finishing the function
+        auto cur_scope_variables = cur_scope->GetVariablesMap();
+        for (auto& [name, value] : cur_scope_variables) {
+            self_scope_->SetVariableValue(name, value);
+        }
+        return ans;
+    }
+
+private:
+    std::vector<std::shared_ptr<Object>> commands_{};
+    std::vector<std::string> arguments_idx_to_name_{};
+    std::shared_ptr<Scope> self_scope_{};
 };
