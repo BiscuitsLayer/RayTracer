@@ -6,6 +6,27 @@
 #include <numeric>
 #include <filesystem>
 
+std::vector<std::string> Split(const std::string& string, const std::string& delimiter = " ",
+                               bool filter_empty = false) {
+    std::vector<std::string> ans{};
+    std::string temp{};
+
+    size_t cur_idx = 0;
+    size_t delim_idx = 0;
+    while (delim_idx != std::string::npos) {
+        delim_idx = string.find(delimiter, cur_idx);
+        std::string temp = {string.substr(cur_idx, delim_idx - cur_idx)};
+        if (!temp.empty() || (temp.empty() && !filter_empty)) {
+            ans.emplace_back(temp);
+        }
+        if (delim_idx == std::string::npos) {
+            break;
+        }
+        cur_idx = delim_idx + delimiter.size();
+    }
+    return ans;
+}
+
 class RandomGenerator {
 public:
     explicit RandomGenerator(uint32_t seed = 738547485u) : gen_(seed) {
