@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5A661B76-6B7D-31A6-B8BB-EB204AAA10D7}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>IR</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">IR.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">IR</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">IR.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">IR</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">IR.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">IR</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">IR.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">IR</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMSupport.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMCore.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMIRReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMExecutionEngine.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMAsmParser.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMOrcTargetProcess.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMOrcShared.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMRuntimeDyld.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMTarget.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMAnalysis.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMProfileData.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMSymbolize.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMDebugInfoPDB.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMDebugInfoMSF.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMDebugInfoDWARF.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMObject.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMBitReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMCore.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMRemarks.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMBitstreamReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMMCParser.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMMC.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMDebugInfoCodeView.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMTextAPI.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMBinaryFormat.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMSupport.lib;psapi.lib;shell32.lib;ole32.lib;uuid.lib;advapi32.lib;C:\Program Files\MyCodeLibs\lib\zlibd.lib;delayimp.lib;-delayload:shell32.dll;-delayload:ole32.dll;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Debug\lib\LLVMDemangle.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/Debug/IR.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/Debug/IR.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMSupport.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMCore.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMIRReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMExecutionEngine.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMAsmParser.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMOrcTargetProcess.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMOrcShared.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMRuntimeDyld.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMTarget.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMAnalysis.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMProfileData.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMSymbolize.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMDebugInfoPDB.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMDebugInfoMSF.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMDebugInfoDWARF.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMObject.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMBitReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMCore.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMRemarks.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMBitstreamReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMMCParser.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMMC.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMDebugInfoCodeView.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMTextAPI.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMBinaryFormat.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMSupport.lib;psapi.lib;shell32.lib;ole32.lib;uuid.lib;advapi32.lib;C:\Program Files\MyCodeLibs\lib\zlibd.lib;delayimp.lib;-delayload:shell32.dll;-delayload:ole32.dll;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\Release\lib\LLVMDemangle.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/Release/IR.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/Release/IR.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMSupport.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMCore.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMIRReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMExecutionEngine.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMAsmParser.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMOrcTargetProcess.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMOrcShared.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMRuntimeDyld.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMTarget.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMAnalysis.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMProfileData.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMSymbolize.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMDebugInfoPDB.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMDebugInfoMSF.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMDebugInfoDWARF.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMObject.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMBitReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMCore.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMRemarks.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMBitstreamReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMMCParser.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMMC.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMDebugInfoCodeView.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMTextAPI.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMBinaryFormat.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMSupport.lib;psapi.lib;shell32.lib;ole32.lib;uuid.lib;advapi32.lib;C:\Program Files\MyCodeLibs\lib\zlibd.lib;delayimp.lib;-delayload:shell32.dll;-delayload:ole32.dll;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\MinSizeRel\lib\LLVMDemangle.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/MinSizeRel/IR.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/MinSizeRel/IR.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SCL_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;UNICODE;_UNICODE;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;__STDC_LIMIT_MACROS;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\include;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\include;C:\Program Files\MyCodeLibs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMSupport.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMCore.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMIRReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMExecutionEngine.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMAsmParser.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMOrcTargetProcess.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMOrcShared.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMRuntimeDyld.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMTarget.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMAnalysis.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMProfileData.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMSymbolize.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMDebugInfoPDB.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMDebugInfoMSF.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMDebugInfoDWARF.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMObject.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMBitReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMCore.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMRemarks.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMBitstreamReader.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMMCParser.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMMC.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMDebugInfoCodeView.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMTextAPI.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMBinaryFormat.lib;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMSupport.lib;psapi.lib;shell32.lib;ole32.lib;uuid.lib;advapi32.lib;C:\Program Files\MyCodeLibs\lib\zlibd.lib;delayimp.lib;-delayload:shell32.dll;-delayload:ole32.dll;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\RelWithDebInfo\lib\LLVMDemangle.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/RelWithDebInfo/IR.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/RelWithDebInfo/IR.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir -BC:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build --check-stamp-file C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindZLIB.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\MyCodeLibs\lib\cmake\llvm\LLVMConfig.cmake;C:\Program Files\MyCodeLibs\lib\cmake\llvm\LLVMConfigVersion.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeCCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeCXXCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeRCCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeSystem.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\lib\cmake\llvm\LLVMBuildTreeOnlyTargets.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\lib\cmake\llvm\LLVMExports.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\cmake\modules\LLVM-Config.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir -BC:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build --check-stamp-file C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindZLIB.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\MyCodeLibs\lib\cmake\llvm\LLVMConfig.cmake;C:\Program Files\MyCodeLibs\lib\cmake\llvm\LLVMConfigVersion.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeCCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeCXXCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeRCCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeSystem.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\lib\cmake\llvm\LLVMBuildTreeOnlyTargets.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\lib\cmake\llvm\LLVMExports.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\cmake\modules\LLVM-Config.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir -BC:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build --check-stamp-file C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindZLIB.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\MyCodeLibs\lib\cmake\llvm\LLVMConfig.cmake;C:\Program Files\MyCodeLibs\lib\cmake\llvm\LLVMConfigVersion.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeCCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeCXXCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeRCCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeSystem.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\lib\cmake\llvm\LLVMBuildTreeOnlyTargets.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\lib\cmake\llvm\LLVMExports.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\cmake\modules\LLVM-Config.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir -BC:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build --check-stamp-file C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindZLIB.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\MyCodeLibs\lib\cmake\llvm\LLVMConfig.cmake;C:\Program Files\MyCodeLibs\lib\cmake\llvm\LLVMConfigVersion.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeCCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeCXXCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeRCCompiler.cmake;C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\3.21.2\CMakeSystem.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\lib\cmake\llvm\LLVMBuildTreeOnlyTargets.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\build\lib\cmake\llvm\LLVMExports.cmake;D:\Chrome_Downloads\llvm-project-release-15.x\llvm-project-release-15.x\llvm\cmake\modules\LLVM-Config.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\vWX1074699\Desktop\LLVMCOURSE\RayTracer\ir\build\ZERO_CHECK.vcxproj">
+      <Project>{2A67CAB4-DF77-3BA9-8631-0D65F95801FE}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

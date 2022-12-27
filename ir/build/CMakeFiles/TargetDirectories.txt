@@ -1,0 +1,6 @@
+C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/intrinsics_gen.dir
+C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/omp_gen.dir
+C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/acc_gen.dir
+C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/IR.dir
+C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/vWX1074699/Desktop/LLVMCOURSE/RayTracer/ir/build/CMakeFiles/ZERO_CHECK.dir
